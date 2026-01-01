@@ -1,0 +1,45 @@
+[Unit]
+Description=Base op-geth
+Documentation=https://docs.base.org/
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=base
+Group=base
+
+ExecStart=/usr/local/bin/op-geth \
+    --datadir=/var/lib/base/geth \
+    --http \
+    --http.addr=0.0.0.0 \
+    --http.port=8545 \
+    --http.vhosts=* \
+    --http.corsdomain=* \
+    --http.api=eth,net,web3,debug,txpool \
+    --ws \
+    --ws.addr=0.0.0.0 \
+    --ws.port=8546 \
+    --ws.origins=* \
+    --ws.api=eth,net,web3 \
+    --authrpc.addr=0.0.0.0 \
+    --authrpc.port=8551 \
+    --authrpc.vhosts=* \
+    --authrpc.jwtsecret=/var/lib/base/jwt.hex \
+    --syncmode=snap \
+    --gcmode=full \
+    --maxpeers=50 \
+    --rollup.sequencerhttp=https://mainnet-sequencer.base.org \
+    --rollup.disabletxpoolgossip=true
+
+Restart=on-failure
+RestartSec=10
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=op-geth
+
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

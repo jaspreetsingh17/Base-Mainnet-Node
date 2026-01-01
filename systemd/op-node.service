@@ -1,0 +1,42 @@
+[Unit]
+Description=Base op-node
+Documentation=https://docs.base.org/
+After=network-online.target op-geth.service
+Wants=network-online.target
+Requires=op-geth.service
+
+[Service]
+Type=simple
+User=base
+Group=base
+
+EnvironmentFile=/etc/base/op-node.env
+
+ExecStart=/usr/local/bin/op-node \
+    --network=base-mainnet \
+    --l1=${OP_NODE_L1_ETH_RPC} \
+    --l1.beacon=${OP_NODE_L1_BEACON} \
+    --l2=http://localhost:8551 \
+    --l2.jwt-secret=/var/lib/base/jwt.hex \
+    --rpc.addr=0.0.0.0 \
+    --rpc.port=9545 \
+    --p2p.listen.ip=0.0.0.0 \
+    --p2p.listen.tcp=9222 \
+    --p2p.listen.udp=9222 \
+    --metrics.enabled \
+    --metrics.addr=0.0.0.0 \
+    --metrics.port=7300 \
+    --syncmode=execution-layer \
+    --log.level=info
+
+Restart=on-failure
+RestartSec=10
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=op-node
+
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
