@@ -36,11 +36,13 @@ Base is an Ethereum Layer 2 built on the OP Stack (Optimism). This guide covers 
 ## Quick Start
 
 ```bash
-git clone https://github.com/your-username/base-node.git
+git clone https://github.com/jaspreetsingh17/Base-Mainnet-Node.git
 cd base-node
 chmod +x scripts/install.sh
 ./scripts/install.sh
 ```
+
+For manual installation and configuration, see [docs/Manual-Setup.md](docs/Manual-Setup.md).
 
 ## Directory Structure
 
